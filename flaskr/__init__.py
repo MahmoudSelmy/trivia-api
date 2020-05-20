@@ -3,7 +3,7 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import random
-from database_access import CategoryAccess
+from database_access import CategoryAccess, QuestionsAccess
 
 from models import setup_db, Question, Category
 
@@ -23,11 +23,6 @@ def create_app(test_config=None):
         response.headers.add('Access-Control-Allow-Methods', 'GET,PATCH,POST,DELETE,OPTIONS')
         return response
 
-    '''
-    @TODO: 
-    Create an endpoint to handle GET requests 
-    for all available categories.
-    '''
     @app.route('/categories')
     def get_all_categories():
         categories = CategoryAccess.get_all_categories()
@@ -52,6 +47,23 @@ def create_app(test_config=None):
     ten questions per page and pagination at the bottom of the screen for three pages.
     Clicking on the page numbers should update the questions. 
     '''
+    @app.route('/questions')
+    def get_questions_page():
+        page_number = request.args.get('page', 1, type=int)
+        questions = QuestionsAccess.get_questions_page(page_number)
+
+        categories = CategoryAccess.get_all_categories_as_types()
+
+        if len(questions) == 0:
+            abort(404)
+
+        return jsonify({
+            'success': True,
+            'total_questions':QuestionsAccess.total_number,
+            'questions': questions,
+            'categories': categories,
+            'currentCategory': categories[0]
+        })
 
     '''
     @TODO: 
