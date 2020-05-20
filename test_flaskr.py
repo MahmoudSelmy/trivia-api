@@ -25,6 +25,13 @@ class TriviaTestCase(unittest.TestCase):
             # create all tables
             self.db.create_all()
 
+        self.new_question = {
+            "answer": "write body and header",
+            "category": "Fullstack Developer",
+            "difficulty": 0,
+            "question": "How to HTML2?"
+        }
+
     def tearDown(self):
         """Executed after reach test"""
         pass
@@ -48,6 +55,14 @@ class TriviaTestCase(unittest.TestCase):
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
+
+    def test_delete_question_invalid_id(self):
+        res = self.client().delete('/questions/5000')
+        self.assertEqual(res.status_code, 404)
+
+    def test_create_new_question(self):
+        res = self.client().post('/questions', json=self.new_question)
+        self.assertEqual(res.status_code, 200)
 
 
 # Make the tests conveniently executable
