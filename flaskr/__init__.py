@@ -25,7 +25,7 @@ def create_app(test_config=None):
 
     @app.route('/categories')
     def get_all_categories():
-        categories = CategoryAccess.get_all_categories()
+        categories = CategoryAccess.get_all_categories_as_types()
         if len(categories) == 0:
             abort(404)
 
@@ -91,7 +91,7 @@ def create_app(test_config=None):
     def get_questions_from_categories(category_id):
         try:
             page_number = request.args.get('page', 1, type=int)
-            questions = QuestionsAccess.get_all_category_questions(category_id, page_number)
+            questions = QuestionsAccess.get_all_category_questions(category_id+1, page_number)
 
             if len(questions) == 0:
                 abort(404)

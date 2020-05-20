@@ -81,7 +81,7 @@ class QuestionsAccess:
         answer = cls._get_attribute_from_data(data, 'answer')
         category = cls._get_attribute_from_data(data, 'category')
         difficulty = cls._get_attribute_from_data(data, 'difficulty')
-        question = Question(question, answer, category, difficulty)
+        question = Question(question, answer, int(category) + 1, difficulty)
         return question
 
     @classmethod
