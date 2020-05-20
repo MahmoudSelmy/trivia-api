@@ -21,7 +21,10 @@ class CategoryAccess:
 
 
 class QuestionsAccess:
-    total_number = 0
+
+    @classmethod
+    def _format_questions(cls, questions):
+        return [question.format() for question in questions]
 
     @classmethod
     def _paginate_questions(cls, page_number, questions):
@@ -30,20 +33,23 @@ class QuestionsAccess:
         end = min(start + QUESTIONS_PER_PAGE, n)
         if start >= n:
             return []
-        questions = [question.format() for question in questions]
-        current_questions = questions[start:end]
-        return current_questions
+        questions = questions[start:end]
+        return questions
 
     @classmethod
     def get_all_questions(cls):
         questions = Question.query.order_by(Question.id).all()
-        cls.total_number = len(questions)
         return questions
+
+    @classmethod
+    def get_total_number(cls):
+        return len(cls.get_all_questions())
 
     @classmethod
     def get_questions_page(cls, page_number):
         questions = cls.get_all_questions()
         questions_paginated = cls._paginate_questions(page_number, questions)
+        questions_paginated = cls._format_questions(questions_paginated)
         return questions_paginated
 
     @classmethod
@@ -79,4 +85,10 @@ class QuestionsAccess:
             question.insert()
         except Exception as e:
             raise ValueError(str(e))
+
+    @classmethod
+    def search_questions(cls, search_term):
+        questions = Question.query.filter(Question.question.contains(search_term)).all()
+        questions = cls._format_questions(questions)
+        return questions
 

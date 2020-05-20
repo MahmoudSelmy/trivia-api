@@ -47,7 +47,7 @@ def create_app(test_config=None):
 
         return jsonify({
             'success': True,
-            'total_questions': QuestionsAccess.total_number,
+            'total_questions': QuestionsAccess.get_total_number(),
             'questions': questions,
             'categories': categories,
             'currentCategory': categories[0]
@@ -65,13 +65,24 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/questions', methods=['POST'])
-    def create_book():
+    def create_or_search_question():
         body = request.get_json()
         try:
-            QuestionsAccess.create_question(body)
-            return jsonify({
-                'success': True
-            })
+            search_term = body.get('searchTerm', None)
+            if search_term is None:
+                QuestionsAccess.create_question(body)
+                return jsonify({
+                    'success': True
+                })
+            else:
+                questions = QuestionsAccess.search_questions(search_term)
+                return jsonify({
+                    'success': True,
+                    'questions': questions,
+                    'total_questions': QuestionsAccess.get_total_number(),
+                    'current_category': questions[0]['category']
+                })
+
         except Exception as e:
             print(e)
             abort(422)
