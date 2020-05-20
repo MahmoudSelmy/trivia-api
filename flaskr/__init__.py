@@ -50,7 +50,7 @@ def create_app(test_config=None):
             'total_questions': QuestionsAccess.get_total_number(),
             'questions': questions,
             'categories': categories,
-            'currentCategory': categories[0]
+            'current_category': questions[0]['category']
         })
 
     @app.route('/questions/<int:question_id>', methods=['DELETE'])
@@ -96,32 +96,24 @@ def create_app(test_config=None):
     category to be shown. 
     '''
 
-    # @app.route('/categories/<int:category_id>/questions', methods=['GET'])
-    # def get_questions_from_categories(category_id):
-    #     # Query for all Questions that match category id
-    #     selection = (Question.query
-    #                  .filter(Question.category == str(category_id))
-    #                  .order_by(Question.id)
-    #                  .all())
-    #
-    #     if not selection:
-    #         # If selection is empty it means they are no question in this category
-    #         abort(400, {'message': 'No questions with category {} found.'.format(category_id)})
-    #
-    #     # Paginate and format question into list of dicts
-    #     questions_paginated = paginate_questions(request, selection)
-    #
-    #     if not questions_paginated:
-    #         # If paginated questions is empty it means the page selected does not contain any questions
-    #         abort(404, {'message': 'No questions in selected page.'})
-    #
-    #     # Return succesfull response
-    #     return jsonify({
-    #         'success': True,
-    #         'questions': questions_paginated,
-    #         'total_questions': len(selection),
-    #         'current_category': category_id
-    #     })
+    @app.route('/categories/<int:category_id>/questions', methods=['GET'])
+    def get_questions_from_categories(category_id):
+        try:
+            page_number = request.args.get('page', 1, type=int)
+            questions = QuestionsAccess.get_all_category_questions(category_id, page_number)
+
+            if len(questions) == 0:
+                abort(404)
+
+            return jsonify({
+                'success': True,
+                'questions': questions,
+                'total_questions': QuestionsAccess.get_total_number(),
+                'current_category': category_id
+            })
+        except Exception as e:
+            print(e)
+            abort(422)
 
     '''
     @TODO: 

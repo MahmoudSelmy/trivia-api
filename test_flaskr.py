@@ -27,7 +27,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.new_question = {
             "answer": "write body and header",
-            "category": "Fullstack Developer",
+            "category": 1,
             "difficulty": 0,
             "question": "How to HTML2?"
         }
@@ -83,8 +83,8 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(len(data['questions']))
 
     def test_get_category_questions_invalid_category(self):
-        res = self.client().get('/categories/1/questions')
-        self.assertEqual(res.status_code, 404)
+        res = self.client().get('/categories/5000/questions')
+        self.assertEqual(res.status_code, 422)
 
 
 # Make the tests conveniently executable

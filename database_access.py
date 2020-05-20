@@ -97,3 +97,13 @@ class QuestionsAccess:
         questions = cls._format_questions(questions)
         return questions
 
+    @classmethod
+    def get_all_category_questions(cls, category_id, page_number):
+        category = CategoryAccess.get_category(category_id)
+        if category is None:
+            raise ValueError('Invalid category_id')
+        questions = category.questions
+        questions = cls._paginate_questions(page_number, questions)
+        questions = cls._format_questions(questions)
+        return questions
+
