@@ -84,7 +84,7 @@ it will insert a new question into the database.
   - if you want to **insert**
        1. **string** `question`
        2. **string** `answer`
-       3. **string** `category`
+       3. **int** `category`
        4. **int** `difficulty`
 - Returns: 
   - if you searched:
@@ -104,7 +104,7 @@ it will insert a new question into the database.
         - **int** `id` 
         - **string** `question`
         - **string** `answer`
-        - **string** `category`
+        - **int** `category`
         - **int** `difficulty`
     2. **int** `total_questions`
     3. **int** `created`  id from inserted question
@@ -236,7 +236,7 @@ If you try to delete a `question` which does not exist, it will throw an `400` e
       - **int** `id`
       - **string** `question`
       - **string** `answer`
-      - **string** `category`
+      - **int** `category`
       - **int** `difficulty`
   2. **boolean** `success`
 
@@ -302,7 +302,7 @@ Endpoint does not raise any specific errors.
      - **int** `id` 
      - **string** `question`
      - **string** `answer`
-     - **string** `category`
+     - **int** `category`
      - **int** `difficulty`
   3. **int** `total_questions`
   4. **boolean** `success`
