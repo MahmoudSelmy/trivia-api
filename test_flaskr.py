@@ -87,7 +87,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 404)
 
 
-
 # Make the tests conveniently executable
 if __name__ == "__main__":
     unittest.main()

@@ -19,6 +19,11 @@ class CategoryAccess:
         types = [category['type'] for category in categories]
         return types
 
+    @classmethod
+    def get_category(cls, category_id):
+        category = Category.query.filter(Category.id == category_id).one_or_none()
+        return category
+
 
 class QuestionsAccess:
 
