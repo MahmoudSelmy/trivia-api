@@ -32,6 +32,14 @@ class TriviaTestCase(unittest.TestCase):
             "question": "How to HTML2?"
         }
 
+        self.quiz = {
+            'previous_questions': [1, 2, 5],
+            'quiz_category': {
+                'type': 'ANDROID Developer',
+                'id': 1
+            }
+        }
+
     def tearDown(self):
         """Executed after reach test"""
         pass
@@ -84,7 +92,15 @@ class TriviaTestCase(unittest.TestCase):
 
     def test_get_category_questions_invalid_category(self):
         res = self.client().get('/categories/5000/questions')
-        self.assertEqual(res.status_code, 422)
+        self.assertEqual(res.status_code, 404)
+
+    def test_get_random_quiz_question_with_category(self):
+        res = self.client().post('/quizzes', json=self.quiz)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertTrue(data['success'])
+        self.assertTrue(data['question']['id'] not in self.quiz['previous_questions'])
 
 
 # Make the tests conveniently executable

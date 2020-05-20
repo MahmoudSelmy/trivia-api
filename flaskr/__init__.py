@@ -87,15 +87,6 @@ def create_app(test_config=None):
             print(e)
             abort(422)
 
-    '''
-    @TODO: 
-    Create a GET endpoint to get questions based on category. 
-
-    TEST: In the "List" tab / main screen, clicking on one of the 
-    categories in the left column will cause only questions of that 
-    category to be shown. 
-    '''
-
     @app.route('/categories/<int:category_id>/questions', methods=['GET'])
     def get_questions_from_categories(category_id):
         try:
@@ -113,7 +104,7 @@ def create_app(test_config=None):
             })
         except Exception as e:
             print(e)
-            abort(422)
+            abort(404)
 
     '''
     @TODO: 
