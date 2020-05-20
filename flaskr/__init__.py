@@ -3,6 +3,7 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import random
+from database_access import CategoryAccess
 
 from models import setup_db, Question, Category
 
@@ -27,6 +28,17 @@ def create_app(test_config=None):
     Create an endpoint to handle GET requests 
     for all available categories.
     '''
+    @app.route('/categories')
+    def get_all_categories():
+        categories = CategoryAccess.get_all_categories()
+        if len(categories) == 0:
+            abort(404)
+
+        return jsonify({
+            'success': True,
+            'categories': categories,
+            'total_categories': len(categories)
+        })
 
     '''
     @TODO: 
@@ -99,3 +111,8 @@ def create_app(test_config=None):
     '''
 
     return app
+
+
+if __name__ == '__main__':
+    app = create_app()
+    app.run()
