@@ -56,5 +56,27 @@ class QuestionsAccess:
         question = cls.get_question(question_id)
         if question is None:
             raise ValueError('Invalid question_id')
-
         question.delete()
+
+    @classmethod
+    def _get_attribute_from_data(cls, data, attribute_name):
+        attribute = data.get(attribute_name, None)
+        return attribute
+
+    @classmethod
+    def _convert_data_to_question(cls, data):
+        question = cls._get_attribute_from_data(data, 'question')
+        answer = cls._get_attribute_from_data(data, 'answer')
+        category = cls._get_attribute_from_data(data, 'category')
+        difficulty = cls._get_attribute_from_data(data, 'difficulty')
+        question = Question(question, answer, category, difficulty)
+        return question
+
+    @classmethod
+    def create_question(cls, data):
+        try:
+            question = cls._convert_data_to_question(data)
+            question.insert()
+        except Exception as e:
+            raise ValueError(str(e))
+

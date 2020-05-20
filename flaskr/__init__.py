@@ -75,6 +75,17 @@ def create_app(test_config=None):
     of the questions list in the "List" tab.  
     '''
 
+    @app.route('/questions', methods=['POST'])
+    def create_book():
+        body = request.get_json()
+        try:
+            QuestionsAccess.create_question(body)
+            return jsonify({
+                'success': True
+            })
+        except Exception as e:
+            print(e)
+            abort(422)
 
     '''
     @TODO: 
