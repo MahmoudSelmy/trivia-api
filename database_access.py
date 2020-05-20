@@ -1,4 +1,5 @@
 from models import *
+import random
 
 QUESTIONS_PER_PAGE = 10
 
@@ -98,12 +99,47 @@ class QuestionsAccess:
         return questions
 
     @classmethod
-    def get_all_category_questions(cls, category_id, page_number):
+    def get_all_category_questions(cls, category_id, page_number=0, paginated=True):
         category = CategoryAccess.get_category(category_id)
         if category is None:
             raise ValueError('Invalid category_id')
         questions = category.questions
-        questions = cls._paginate_questions(page_number, questions)
+        if paginated:
+            questions = cls._paginate_questions(page_number, questions)
         questions = cls._format_questions(questions)
         return questions
 
+    @classmethod
+    def get_category_question_not_in_id_set(cls, ids, category_id=None):
+        query = Question.query.filter(Question.id.notin_(ids))
+        if category_id is not None:
+            query = query.filter(Question.category_id == category_id)
+        questions = query.all()
+
+        questions = cls._format_questions(questions)
+        return questions
+
+    @classmethod
+    def get_random_question(cls, data):
+        previous_questions = data.get('previous_questions', None)
+        current_category = data.get('quiz_category', None)
+
+        if not previous_questions:
+            if current_category:
+                category_id = current_category['id']
+                questions = cls.get_all_category_questions(category_id, paginated=False)
+            else:
+                questions = cls.get_all_questions()
+        else:
+            if current_category:
+                category_id = current_category['id']
+                questions = cls.get_category_question_not_in_id_set(previous_questions, category_id)
+            else:
+                questions = cls.get_category_question_not_in_id_set(previous_questions)
+
+        if len(questions) == 0:
+            raise ValueError('No available questions')
+
+        question = questions[random.randint(0, len(questions))]
+
+        return question

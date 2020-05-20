@@ -118,6 +118,23 @@ def create_app(test_config=None):
     and shown whether they were correct or not. 
     '''
 
+    @app.route('/quizzes', methods=['POST'])
+    def get_random_question_for_quiz():
+        data = request.get_json()
+
+        if not data:
+            abort(400)
+        try:
+            question = QuestionsAccess.get_random_question(data)
+        except Exception as e:
+            print(e)
+            abort(400)
+
+        return jsonify({
+            'success': True,
+            'question': question
+        })
+
     '''
     @TODO: 
     Create error handlers for all expected errors 
