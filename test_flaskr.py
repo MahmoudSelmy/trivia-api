@@ -43,6 +43,12 @@ class TriviaTestCase(unittest.TestCase):
         res = self.client().get('/questions?page=10000')
         self.assertEqual(res.status_code, 404)
 
+    def test_delete_question_valid_id(self):
+        res = self.client().delete('/questions/5')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
