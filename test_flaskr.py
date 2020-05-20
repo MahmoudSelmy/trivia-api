@@ -65,6 +65,14 @@ class TriviaTestCase(unittest.TestCase):
         res = self.client().post('/questions', json=self.new_question)
         self.assertEqual(res.status_code, 200)
 
+    def test_search_questions(self):
+        res = self.client().post('/questions', json={'searchTerm': 'How to'})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['total_questions'] > 0)
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
