@@ -32,39 +32,11 @@ you need to use the default domain on which the flask server is running.
   5. **boolean** `success`
 
 #### Example
-```json
-{
-"categories": [
-    "Science",
-    "Art",
-    "Geography",
-    "History",
-    "Entertainment",
-    "Sports"
-  ],
-"current_category": 1,
-"questions": [
-    {
-      "answer": "Apollo 13",
-      "category": 5,
-      "difficulty": 4,
-      "id": 2,
-      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
-    },
-    {
-      "answer": "Tom Cruise",
-      "category": 5,
-      "difficulty": 4,
-      "id": 4,
-      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
-    }
-  ],
-  "success": true,
-  "total_questions": 24
-}
+- Request : http://127.0.0.1:5000/questions?page=1
+- Response : [get_all_questions.json](./outputs/get_all_questions.json)
 
-```
-#### Errors
+### Errors
+
 If you try fetch a page which does not have any questions, you will encounter an error which looks like this:
 ```json
 {
@@ -111,62 +83,24 @@ it will insert a new question into the database.
     4. **boolean** `success`
 
 #### Example
-Search Questions
-```json
-{
-  "current_category": [
-    {
-      "id": 1,
-      "type": "Science"
-    },
-    {
-      "id": 2,
-      "type": "Art"
-    }
-
-  ],
-  "questions": [
-    {
-      "answer": "Jup",
-      "category": 1,
-      "difficulty": 1,
-      "id": 24,
-      "question": "Is this a test question?"
-    }
-  
-  ],
-  "success": true,
-  "total_questions": 20
-}
-
-```
-Create Question
-```json
-{
-  "created": 26,
-  "questions": [
-    {
-      "answer": "Apollo 13",
-      "category": 5,
-      "difficulty": 4,
-      "id": 2,
-      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
-    },
-    {
-      "answer": "Tom Cruise",
-      "category": 5,
-      "difficulty": 4,
-      "id": 4,
-      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
-    }
-
-  ],
-  "success": true,
-  "total_questions": 21
-}
-
-```
-
+- Search Questions
+  - Request : 
+    - URL: http://127.0.0.1:5000/questions
+    - Body: {"searchTerm": "How"}
+  - Response: [search_questions.json](./outputs/search_questions.json)
+- Create Question
+  - Request : 
+    - URL: http://127.0.0.1:5000/questions
+    - Body: 
+        ```json
+        {
+            "answer": "write body and header",
+            "category": 1,
+            "difficulty": 0,
+            "question": "How to HTML2?"
+        }
+        ```
+  - Response: [create_new_question.json](./outputs/create_new_question.json)
 
 #### Errors
 **Search related**
@@ -175,21 +109,9 @@ If you try to search for a `question` which does not exist, it will response wit
 
 ```json
 {
-  "error": 404,
-  "message": "No questions that contains \"this does not exist\" found.",
-  "success": false
-}
-```
-
-**Insert related**
-
-If you try to insert a new `question`, but forget to provide a required field, it will throw an `400` error:
-
-```json
-{
-  "error": 400,
-  "message": "Answer can not be blank",
-  "success": false
+    "error": 404,
+    "message": "resource not found",
+    "success": false
 }
 ```
 
@@ -203,12 +125,8 @@ If you try to insert a new `question`, but forget to provide a required field, i
 
 
 #### Example
-```json
-{
-  "deleted": 10,
-  "success": true
-}
-```
+- Request : http://127.0.0.1:5000/questions/10
+- Response : [delete_question.json](./outputs/delete_question.json)
 
 ### Errors
 
@@ -216,9 +134,9 @@ If you try to delete a `question` which does not exist, it will throw an `400` e
 
 ```json
 {
-  "error": 400,
-  "message": "Question with id 7 does not exist.",
-  "success": false
+    "error": 422,
+    "message": "un_processable",
+    "success": false
 }
 ```
 
@@ -241,31 +159,13 @@ If you try to delete a `question` which does not exist, it will throw an `400` e
   2. **boolean** `success`
 
 #### Example
-```json
-{
-  "question": {
-    "answer": "Jup",
-    "category": 1,
-    "difficulty": 1,
-    "id": 24,
-    "question": "Is this a test question?"
-  },
-  "success": true
-}
+- Request : http://127.0.0.1:5000/quizzes
+- Response : [get_quiz_question.json](./outputs/get_quiz_question.json)
 
-```
 ### Errors
+This endpoint has one common error:
+- Not found 404 : their no question that meet the selection criteria
 
-If you try to play the quiz game without a a valid JSON body, it will response with an  `400` error.
-
-```json
-{
-  "error": 400,
-  "message": "Please provide a JSON body with previous question Ids and optional category.",
-  "success": false
-}
-
-```
 ### 5. GET /categories
 
 - Fetches a list of all `categories` with its `type` as values.
@@ -273,26 +173,13 @@ If you try to play the quiz game without a a valid JSON body, it will response w
 and a `success` value which indicates status of response. 
 
 #### Example
-```json
-{
-  "categories": [
-    "Science",
-    "Art",
-    "Geography",
-    "History",
-    "Entertainment",
-    "Sports"
-  ],
-  "success": true
-}
-```
-### Errors
+- Request : http://127.0.0.1:5000/categories
+- Response : [get_all_categories.json](./outputs/get_all_categories.json)
 
-Endpoint does not raise any specific errors.
 
 ### 6. GET /categories/<category_id>/questions
 
-- Fetches all `questions` (paginated) from one specific category.
+- Fetches all `questions` from one specific category.
 - Request Arguments:
   - **int** `category_id`
   - **int** `page`
@@ -307,63 +194,11 @@ Endpoint does not raise any specific errors.
   3. **int** `total_questions`
   4. **boolean** `success`
 
-#### Example response
-
-```json
-{
-  "current_category": "2",
-  "questions": [
-    {
-      "answer": "Escher",
-      "category": 2,
-      "difficulty": 1,
-      "id": 16,
-      "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
-    },
-    {
-      "answer": "Mona Lisa",
-      "category": 2,
-      "difficulty": 3,
-      "id": 17,
-      "question": "La Giaconda is better known as what?"
-    },
-    {
-      "answer": "One",
-      "category": 2,
-      "difficulty": 4,
-      "id": 18,
-      "question": "How many paintings did Van Gogh sell in his lifetime?"
-    },
-    {
-      "answer": "Jackson Pollock",
-      "category": 2,
-      "difficulty": 2,
-      "id": 19,
-      "question": "Which American artist was a pioneer of Abstract Expressionism, and a leading exponent of action painting?"
-    }
-  ],
-  "success": true,
-  "total_questions": 4
-}
-```
+#### Example
+- Request : http://127.0.0.1:5000/categories/1/questions
+- Response : [get_category_questions.json](./outputs/get_category_questions.json)
 
 ### Errors
-This endpoint can yield 2 common errors. For example, if you ask for questions of a category that does not exist it will throw an `400` error:
-
-```json
-{
-  "error": 400,
-  "message": "No questions with category 10 found.",
-  "success": false
-}
-```
-Additionally, if you query for a category which has questions, but not on the selected `page`, it will raise an `404` error:
-
-```json
-{
-  "error": 404,
-  "message": "No questions in selected page.",
-  "success": false
-}
-
-```
+This endpoint can yield 2 common errors:
+- Bad request 400 : Invalid body
+- Not found 404 : their no question that meet the selection criteria

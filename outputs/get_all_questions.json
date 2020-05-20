@@ -1,0 +1,82 @@
+{
+    "categories": [
+        "FULL-STACK Developer",
+        "CLOUD Developer",
+        "ANDROID Developer"
+    ],
+    "current_category": 1,
+    "questions": [
+        {
+            "answer": "Use flask",
+            "category": 1,
+            "difficulty": 3,
+            "id": 3,
+            "question": "How to build API?"
+        },
+        {
+            "answer": "Use flask",
+            "category": 1,
+            "difficulty": 3,
+            "id": 4,
+            "question": "How to build API?"
+        },
+        {
+            "answer": "Use flask",
+            "category": 1,
+            "difficulty": 3,
+            "id": 5,
+            "question": "How to build API?"
+        },
+        {
+            "answer": "Use flask",
+            "category": 1,
+            "difficulty": 3,
+            "id": 6,
+            "question": "How to build API?"
+        },
+        {
+            "answer": "Use flask",
+            "category": 1,
+            "difficulty": 3,
+            "id": 7,
+            "question": "How to build API?"
+        },
+        {
+            "answer": "Use flask",
+            "category": 1,
+            "difficulty": 3,
+            "id": 8,
+            "question": "How to build API?"
+        },
+        {
+            "answer": "Use flask",
+            "category": 1,
+            "difficulty": 3,
+            "id": 9,
+            "question": "How to build API?"
+        },
+        {
+            "answer": "Use flask",
+            "category": 1,
+            "difficulty": 3,
+            "id": 10,
+            "question": "How to build API?"
+        },
+        {
+            "answer": "Use flask",
+            "category": 1,
+            "difficulty": 3,
+            "id": 11,
+            "question": "How to build API?"
+        },
+        {
+            "answer": "Use flask",
+            "category": 1,
+            "difficulty": 3,
+            "id": 12,
+            "question": "How to build API?"
+        }
+    ],
+    "success": true,
+    "total_questions": 83
+}

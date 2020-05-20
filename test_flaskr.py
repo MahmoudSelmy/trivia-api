@@ -59,7 +59,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 404)
 
     def test_delete_question_valid_id(self):
-        return
         res = self.client().delete('/questions/5')
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)

@@ -85,7 +85,7 @@ def create_app(test_config=None):
 
         except Exception as e:
             print(e)
-            abort(422)
+            abort(404)
 
     @app.route('/categories/<int:category_id>/questions', methods=['GET'])
     def get_questions_from_categories(category_id):
@@ -116,7 +116,7 @@ def create_app(test_config=None):
             question = QuestionsAccess.get_random_question(data)
         except Exception as e:
             print(e)
-            abort(400)
+            abort(404)
 
         return jsonify({
             'success': True,
