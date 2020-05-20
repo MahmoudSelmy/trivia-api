@@ -45,3 +45,16 @@ class QuestionsAccess:
         questions = cls.get_all_questions()
         questions_paginated = cls._paginate_questions(page_number, questions)
         return questions_paginated
+
+    @classmethod
+    def get_question(cls, question_id):
+        question = Question.query.filter(Question.id == question_id).one_or_none()
+        return question
+
+    @classmethod
+    def delete_question(cls, question_id):
+        question = cls.get_question(question_id)
+        if question is None:
+            raise ValueError('Invalid question_id')
+
+        question.delete()
